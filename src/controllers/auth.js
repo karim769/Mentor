@@ -1,25 +1,22 @@
-const { validateSignUp, validateLogIn } = require("../services/auth");
+const { validateSignUp, validateLogIn, validateGuardianSignUp, validateGuardianLogIn } = require("../services/auth");
 
-async function signUp(req,res,next) {
+async function studentSignUp(req,res,next) {
     
     try {
-  
-       const result= await validateSignUp(req.body);
+      
+      const guardianToken=req.cookies.token;
+       const result= await validateSignUp(req.body,guardianToken);
 
        res
-       .cookie('token', result.token, {
-        httpOnly: true,      // Ensure cookie is not accessible via JavaScript
-      })
-      .status(201)
+        .status(201)
       .json(result.message);
        } catch (err) {
-        
         next(err);
        }
 
 }
 
-async function logIn(req,res,next) {
+async function studentLogIn(req,res,next) {
     
     try {
         
@@ -37,4 +34,44 @@ async function logIn(req,res,next) {
 
 }
 
-module.exports={signUp,logIn};
+async function guardianSignUp(req,res,next) {
+  
+  try {
+
+    const result= await validateGuardianSignUp(req.body)
+
+    res
+    .cookie('token', result.token, {
+     httpOnly: true,      // Ensure cookie is not accessible via JavaScript
+   })
+   .status(201)
+   .json(result.message);
+    
+  } catch (error) {
+    
+    next(error);
+  }
+
+}
+
+async function guardianLogIn(req,res,next) {
+  
+  try {
+    
+    const result=await validateGuardianLogIn(req.body);
+    res
+    .cookie('token', result.token, {
+     httpOnly: true,      // Ensure cookie is not accessible via JavaScript
+   })
+   .status(201)
+   .json(result.message);
+
+  } catch (error) {
+    
+    next(error)
+  }
+
+}
+
+
+module.exports={studentSignUp,studentLogIn,guardianLogIn,guardianSignUp};

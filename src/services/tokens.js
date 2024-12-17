@@ -22,5 +22,24 @@ try {
 
 }
 
+async function getPayloadFromToken(token) {
+    
+    try {
+        
+       const payload= await jwt.verify(token,process.env.SECRET_KEY);
 
-module.exports={genToken};
+       if(!payload)
+
+        throw {message:'Invalid token',status:409};
+
+        return payload;
+    
+    } catch (error) {
+
+        throw error;
+        
+    }
+
+}
+
+module.exports={genToken,getPayloadFromToken};

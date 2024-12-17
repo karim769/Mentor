@@ -48,6 +48,10 @@ const student= new Schema({
         type:String,
         required:true,
     },
+    guardianId: { 
+        type: Schema.Types.ObjectId,   // Reference to another model
+        ref: 'Guardian'               // The model you are referencing (Guardian)
+    }
 
 });
 

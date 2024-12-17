@@ -4,6 +4,7 @@ const mongoose=require('mongoose');
 const dotenv=require('dotenv');
 dotenv.config();
 const bodyParser=require('body-parser');
+const cookieParser=require('cookie-parser');
 
 const PORT=process.env.PORT||5000;
 
@@ -23,6 +24,7 @@ mongoose.connect(process.env.DB_URL)
 });
 
 app.use(express.json());
+app.use(cookieParser());
 // app.use(bodyParser);
 
 // Routes
